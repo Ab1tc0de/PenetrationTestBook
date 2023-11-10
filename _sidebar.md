@@ -27,7 +27,7 @@
 
 * **🔎 Web渗透测试**
 * [OWASP TOP 10](Web渗透测试/owasp-top-ten.md)
-* [web应用信息收集](Web渗透测试/web应用信息收集.md)
+* [web信息收集](Web渗透测试/web信息收集.md)
 * [web编辑器漏洞](Web渗透测试/web编辑器漏洞.md)
 * [目录遍历漏洞](Web渗透测试/目录遍历漏洞.md)
 * [文件上传漏洞](Web渗透测试/文件上传漏洞.md)
