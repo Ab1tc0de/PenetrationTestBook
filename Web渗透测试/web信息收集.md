@@ -11,7 +11,7 @@
   sudo nmap -p80 --script=http-enum 192.168.2.200
   ```
   
-### 【gobuster目录爆破】
+### 【目录爆破获取网站文件信息】
 
 * **gobuster目录爆破**
   ```bash
@@ -19,6 +19,29 @@
   ```
   对目标服务器发起目录爆破
   >在执行目录爆破时，相当于执行CC攻击，如果被ban，有以下解决方案：减小并发量，改为爬虫白名单（修改http头）
+
+* **使用feroxbuster爆破目录**
+  ```bash
+  sudo feroxbuster -u http://10.10.10.11/ -w /usr/share/......
+  ```
+  > 有时扫描目录没有信息，可以尝试爆破扩展名
+  > 有时会扫不出上传路径，可以测试注入，爆出路径
+
+### 【web模糊测试】
+
+* **wfuzz模糊测试**
+  * 当出现/~文件名/路径时，可以使用fuzz方法，探测是否还有~文件名类似文件
+  ```bash
+  wfuzz -c -w [/wordlist/]  -u [url]  --hc 404
+  ```
+  
+* **ffuf模糊测试**
+  * 除了wfuzz之外还可以使用ffuf模糊测试
+  ```bash
+  ffuf -u [url] -w [/wordlist/] -e .txt,.php -mc 200
+  ```
+
+
 
 &nbsp;
 
@@ -78,6 +101,30 @@
     **setContentType**：设置Content-Type头。
     **setContentLength**：设置Content-Length头。
     **addCookie**：设置一个Cookie
+    
+### 【HTTP WWW-Authenticate枚举】
+存在于HTTP header中，定义了如何进行身份验证
+
+* **认证流程**
+  * 1）当访问需要授权时，服务器会犯会401 Authorization Required
+    ```
+    HTTP/1.1 401 Authorization Required
+    www-Authenticate: Basic realm= "family" 
+    ```
+    Basic：说明需要基本认证，realm：说明客户端需要输入这个安全区的用户名和密码，而不是其他区的。因为服务器可以为不同的安全区设置不同的用户名和密码。如果服务器只有一个安全区，那么所有的基本认证用户名和密码都是一样的
+  * 2）客户端需要返回认证信息
+    ```
+    GET /family/son.jpg  HTTP/1.1 Authorization: Basic
+    U2h1c2hlbmcwMDcldUZGMUFzczAwNw==
+    ```
+    Basic 内容为： 用户名:密码 的base64形式
+  
+* ** WWW-Authenticate突破**
+  * 1）使用burpsuit爆破，首先创建 WWW-Authenticate认证头
+  * 2）将base64加密部分作为payload
+  * 3）选择字典
+  * 4）设置payload processing即，在开始爆破前对字典进行操作，添加Add Prefix：admin:，再添加Base64-encode
+  * 5）爆破，错误代码位401
   
 ### 【HTTP安全头，SSL/TLS】
 
