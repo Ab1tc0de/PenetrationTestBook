@@ -242,3 +242,45 @@
   ```
   查看本机所有服务
 
+&nbsp;
+
+## 压缩文件
+
+* ```bash
+  tar -cf document.tar /home/work
+  ```
+  将work文件夹压缩为document.tar文件，-c 是表示产生新的包，-f 指定包的文件名。
+  
+* ```bash
+  tar -xf document.tar
+  ```
+  将document.tar文件解压到当前目录，-x 是解开的意思。
+  
+* ```bash
+  tar -czf abc.tar.gz /home/work
+  ```
+  -z 指定tar.gz压缩文件，将work压缩为abc.tar.gz文件
+  
+* ```bash
+  tar -xzf abc.tar.gz
+  ```
+  将abc.tar.gz解压到当前目录
+  
+* ```bash
+  tar -cjf all.tar.bz2 *.jpg
+  ```
+  -j 代表bzip2压缩文件
+  
+* ```bash
+  tar -xjf all.tar.bz2
+  ```
+  
+* ```bash
+  zip -q -r abc.zip /home/work
+  ```
+  -q 不显示执行过程 -r 递归处理
+  
+* ```bash
+  unzip abc.zip -d /home/work
+  ```
+  将abc.zip解压到work目录中

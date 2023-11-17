@@ -11,6 +11,27 @@
   sudo nmap -p80 --script=http-enum 192.168.2.200
   ```
   
+### 【nikto收集web信息】
+
+* **nikto常规扫描**
+  ```bash
+  nikto -h http://10.10.10.10
+  ```
+  -h 指定目标url
+  
+* **nikto指定端口扫描**
+  ```bash
+  nikto -h abc.com -p 443 -ssl
+  ```
+  -p 指定端口号，-ssl使用https扫描
+  
+* **nikto扫描目录**
+  ```bash
+  nikto -h http://192.168.2.200/ -c /wordpress
+  ```
+  使用-c 参数指定扫描的目录，使用-c all 可进行目录爆破，并扫描
+
+
 ### 【目录爆破获取网站文件信息】
 
 * **gobuster目录爆破**
@@ -101,6 +122,17 @@
     **setContentType**：设置Content-Type头。
     **setContentLength**：设置Content-Length头。
     **addCookie**：设置一个Cookie
+    
+### 【HTTP x-forwarded-for】
+* **正向代理与反向代理**
+  * 正向代理：代理服务器代理客户端去访问服务器，即客户端请求发送到代理端，代理端在及那个请求交给服务端，服务端不知道客户端的地址。（隐藏客户端ip，代理）
+  * 反向代理：代理服务器代理服务端去和客户端交互，即是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。客户端不知道服务端地址。（用于隐藏服务器ip，负载均衡，提高访问速度）
+
+* **x-forwarded-for**
+  * 格式：X-Forwarded-For: client, proxy1, proxy2
+    如果请求经过多个代理服务器，每个代理服务器的 IP 地址会依次出现在列表中。这意味着，如果客户端和代理服务器行为良好，最右边的 IP 地址会是最近的代理服务器的 IP 地址，最左边的 IP 地址会是原始客户端的 IP 地址。
+    
+    
     
 ### 【HTTP WWW-Authenticate枚举】
 存在于HTTP header中，定义了如何进行身份验证
@@ -276,6 +308,46 @@
   Feature-Policy: vibrate 'self'; usermedia '*'; sync-xhr 'self' example.com
   ```
   
+### 【常用User-Agent】
+
+有些时候使用默认的user-agent会引起目标服务器警觉，导致被封ip，可以使用搜索引擎的user-agent进行扫描
+
+* **常用user-agent**
+  * google
+  ```url
+  Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)   
+  
+  Googlebot-Image/1.0   google图片搜索
+  ```
+  
+  * bing
+  ```url
+  Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+  ```
+  
+  * baidu
+  ```url
+  Mozilla/5.0 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html)
+
+Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html)   百度移动搜索
+
+Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)
+
+Baiduspider-image+(+http://www.baidu.com/search/spider.htm)   百度图片搜索
+  ```
+  * 360
+  ```url
+  Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0);
+
+360spider (http://webscan.360.cn)  360网站安全检测
+  ```
+  * 腾讯搜搜
+  ```url
+  Sosospider+(+http://help.soso.com/webspider.htm)
+
+Sosoimagespider+(+http://help.soso.com/soso-image-spider.htm)   搜搜图片搜索
+  ```
+
 
 ### 【枚举web应用API】
 
